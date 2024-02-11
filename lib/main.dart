@@ -33,6 +33,9 @@ class MyApp extends StatelessWidget {
     return ScopedModel<CartModel>(
       model: model,
       child: GetMaterialApp(
+        theme: ThemeData(
+          useMaterial3: false
+        ),
         debugShowCheckedModeBanner: false,
         title: 'Shopping Cart',
         home: const SplashScreen(),
