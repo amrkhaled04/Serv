@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.Servquestt.homiee</string>
+	<string>com.Servquest.servquest</string>
 	<key>PROJECT_ID</key>
 	<string>servquest-1f5d8</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:469426152615:ios:f76b9884fd4bf282ffa782</string>
+	<string>1:469426152615:ios:16f23be5ab2b9e25ffa782</string>
 </dict>
 </plist>

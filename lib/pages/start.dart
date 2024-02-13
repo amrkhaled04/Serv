@@ -52,28 +52,36 @@ class _StartPageState extends State<StartPage> {
                       style: TextStyle(fontSize: MediaQuery.of(context).size.width *0.055,fontWeight: FontWeight.bold),),
                   ),
                   actions: <Widget>[
-                    ElevatedButton(
-                        style:ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                            primary: Colors.black,
-                            padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.12, vertical: MediaQuery.of(context).size.height *0.0165),),
-                        onPressed: () async {
-                          await (context.setLocale(const Locale('en')));
-                          Get.updateLocale(const Locale('en'));
-                          Navigator.of(context, rootNavigator: true).pop();
-                        },
-                        child: Text('English',style:TextStyle(fontSize: MediaQuery.of(context).size.width *0.042) ,)),
-                    ElevatedButton(
-                        style:ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                            primary: Colors.black,
-                            padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width *0.135, vertical: MediaQuery.of(context).size.height *0.0115),),
-                        onPressed: () async {
-                          await (context.setLocale(const Locale('ar')));
-                          Get.updateLocale(const Locale('ar'));
-                          Navigator.of(context, rootNavigator: true).pop();
-                        },
-                        child: Text('عربي',style: TextStyle(fontSize: MediaQuery.of(context).size.width *0.042),)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        ElevatedButton(
+                            style:ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                              primary: Colors.black,
+                              fixedSize: Size(MediaQuery.of(context).size.width*0.25, 50)
+                            ),
+                            onPressed: () async {
+                              await (context.setLocale(const Locale('en')));
+                              Get.updateLocale(const Locale('en'));
+                              Navigator.of(context, rootNavigator: true).pop();
+                            },
+                            child: Text('English',style:TextStyle(fontSize: MediaQuery.of(context).size.width *0.04) ,)),
+                        ElevatedButton(
+                            style:ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                              primary: Colors.black,
+                              fixedSize: Size(MediaQuery.of(context).size.width*0.25, 50)
+                            ),
+                            onPressed: () async {
+                              await (context.setLocale(const Locale('ar')));
+                              Get.updateLocale(const Locale('ar'));
+                              Navigator.of(context, rootNavigator: true).pop();
+                            },
+                            child: Text('عربي',style: TextStyle(fontSize: MediaQuery.of(context).size.width *0.04),)),
+                      ],
+                    )
+
                   ],
                 ),
               ),
@@ -104,12 +112,12 @@ class _StartPageState extends State<StartPage> {
           Container(
         padding: EdgeInsets.symmetric(
             horizontal: MediaQuery.of(context).size.width * 0.1),
-        height: MediaQuery.of(context).size.height * 0.45,
+        height: MediaQuery.of(context).size.height*0.5,
         width: MediaQuery.of(context).size.width,
         child: GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3,
-              childAspectRatio: MediaQuery.of(context).size.height *0.0012,
+              childAspectRatio: 1.2,
               crossAxisSpacing: 8.0,
               mainAxisSpacing: 8.0,
             ),
@@ -147,10 +155,7 @@ class _StartPageState extends State<StartPage> {
               Container(
                 padding: EdgeInsets.only(
                     left: MediaQuery.of(context).size.width * 0.1,
-                    right: MediaQuery.of(context).size.width * 0.1,
-                    bottom: context.locale.languageCode == 'en' ?
-                      MediaQuery.of(context).size.height * 0.192:
-                        MediaQuery.of(context).size.height * 0.141),
+                    right: MediaQuery.of(context).size.width * 0.1,),
                 child: Center(
                   child: Text(
                     LocaleKeys.getStartedHint.tr(),
@@ -162,8 +167,9 @@ class _StartPageState extends State<StartPage> {
                   ),
                 ),
               ),
+              Spacer(flex: 5,),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal:MediaQuery.of(context).size.width * 0.05,vertical: MediaQuery.of(context).size.height * 0.04),
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: MaterialButton(
                   elevation: 2,
                   color: Colors.black,
@@ -190,6 +196,7 @@ class _StartPageState extends State<StartPage> {
                   ),
                 ),
               ),
+              Spacer(),
             ],
           ),
         ),
@@ -219,9 +226,6 @@ class _StartPageState extends State<StartPage> {
             children: <Widget>[
               Image.network(image,
                   height: MediaQuery.of(context).size.height * 0.05),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.0009,
-              ),
               Text(
                 name,
                 style: TextStyle(

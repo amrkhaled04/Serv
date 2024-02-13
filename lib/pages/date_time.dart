@@ -2,6 +2,8 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:homiee/flutter_flow/flutter_flow_util.dart';
 import 'package:homiee/l10n/locale_keys.g.dart';
 import 'package:homiee/models/cart_model.dart';
@@ -30,6 +32,8 @@ List<String> Dservices = [];
 List<String> Dprices = [];
 
 int groupValue = -1;
+
+Position? currentPosition;
 
 FToast? fToast;
 
@@ -84,6 +88,14 @@ class _DateAndTimeState extends State<DateAndTime> {
   int? _dayNum;
 
   List<int> radioCount = [];
+  int _selectedRepeat = 0;
+  final List<String> _repeat = [
+    'No repeat',
+    'Every day',
+    'Every week',
+    'Every month'
+  ];
+
 
   int length = CartModel().cart.length;
 
@@ -127,6 +139,63 @@ class _DateAndTimeState extends State<DateAndTime> {
     fToast?.init(context);
   }
 
+  String? _currentAddress;
+
+
+  Future<bool> _handleLocationPermission() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location services are disabled. Please enable the services')));
+      return false;
+    }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Location permissions are denied')));
+        return false;
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text(
+              'Location permissions are permanently denied, we cannot request permissions.')));
+      return false;
+    }
+    return true;
+  }
+  Future<void> _getAddressFromLatLng(Position position) async {
+    await placemarkFromCoordinates(
+        currentPosition!.latitude, currentPosition!.longitude)
+        .then((List<Placemark> placemarks) {
+      Placemark place = placemarks[0];
+      setState(() {
+        _currentAddress =
+        '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}';
+      });
+    }).catchError((e) {
+      debugPrint(e);
+    });
+  }
+
+  Future<void> _getCurrentPosition() async {
+    final hasPermission = await _handleLocationPermission();
+
+    if (!hasPermission) return;
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+        .then((Position position) {
+      setState(() => currentPosition = position);
+      _getAddressFromLatLng(currentPosition!);
+    }).catchError((e) {
+      debugPrint(e);
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -200,7 +269,7 @@ class _DateAndTimeState extends State<DateAndTime> {
                     child: Text(DateFormat('MMMM yyyy').format(DateTime.now()),style: TextStyle(color: Colors.blue,fontSize: MediaQuery.of(context).size.width *0.045),),
                   ),
                   Container(
-                    height: MediaQuery.of(context).size.height*0.09,
+                    height: MediaQuery.of(context).size.width*0.2,
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
@@ -254,12 +323,13 @@ class _DateAndTimeState extends State<DateAndTime> {
                           );
                         }),
                   ),
+
                   const SizedBox(
                     height: 10,
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height*0.09,
+                    height: MediaQuery.of(context).size.width*0.16,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: Colors.white,
@@ -306,8 +376,39 @@ class _DateAndTimeState extends State<DateAndTime> {
                           );
                         }),
                   ),
+                  SizedBox(height: 10,),
+                  Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                    ),
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: _repeat.length,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _selectedRepeat = index;
+                              });
+                            },
+                            child:Container(
+                              padding: EdgeInsets.symmetric(horizontal: 20),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: _selectedRepeat == index ? Colors.blue.shade400 : Colors.grey.shade100,
+                              ),
+                              margin: EdgeInsets.only(right: 20),
+                              child: Center(child: Text(_repeat[index],
+                                style: TextStyle(fontSize: 18, color: _selectedRepeat == index ? Colors.white : Colors.grey.shade800),)
+                              ),
+                            ));
+                      },
+                    ),
+                  ),
                   Padding(
-                    padding: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.07,left: 10,bottom: 8),
+                    padding: EdgeInsets.only(top: MediaQuery.of(context).size.height*0.04,left: 10,bottom: 8),
                     child: Text(LocaleKeys.address.tr(),
                       style: TextStyle(fontWeight: FontWeight.w400,fontSize: MediaQuery.of(context).size.width *0.045,color: Colors.orange),),
                   ),
@@ -393,6 +494,7 @@ class _DateAndTimeState extends State<DateAndTime> {
                       height: MediaQuery.of(context).size.height * 0.065,
                       child: ElevatedButton(
                         onPressed: (){
+                          _getCurrentPosition();
                           Navigator.push(context, MaterialPageRoute(builder: (context){
                             return const AddAddress();
                           }));
@@ -439,6 +541,7 @@ class _DateAndTimeState extends State<DateAndTime> {
       "prices": Dprices.toList(),
       "day": _selectedDay,
       "hour": _selectedHour,
+      "repeat": _selectedRepeat,
       "location": addresses?[groupValue]
     });
     setState(() {

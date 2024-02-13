@@ -1,8 +1,11 @@
 
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:homiee/pages/date_time.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
@@ -510,6 +513,8 @@ class _AddAddressState extends State<AddAddress> {
                           "Street": _model.streetcontroller.text,
                           "Floor,apartment,or villa no.":
                           _model.apartcontroller.text,
+                          "latitude":currentPosition?.latitude ?? "",
+                          "longitude":currentPosition?.longitude ?? ""
                         });
                         Navigator.pushReplacement(context,
                             MaterialPageRoute(builder: (context) {

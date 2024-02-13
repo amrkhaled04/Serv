@@ -1,11 +1,14 @@
 import 'package:cherry_toast/cherry_toast.dart';
-import 'package:cherry_toast/resources/arrays.dart';
+import 'package:cherry_toast/resources/arrays.dart' as Cherry;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:homiee/l10n/locale_keys.g.dart';
 import 'package:homiee/pages/cart_page.dart';
 import 'package:homiee/pages/history.dart';
+import 'package:readmore/readmore.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import '../constants/firebase_auth_constants.dart';
@@ -60,6 +63,8 @@ class _ServiceSelectorState extends State<ServiceSelector> {
 
   @override
   Widget build(BuildContext context) {
+
+
     return servicesList == null
         ? loading(context)
         : Scaffold(
@@ -120,11 +125,16 @@ class _ServiceSelectorState extends State<ServiceSelector> {
                           return ScopedModelDescendant<CartModel>(
                               builder: (context, child, model) {
                             return ListTile(
-                                title: Text(context.locale.languageCode == 'en' ?
+                                title: ReadMoreText(context.locale.languageCode == 'en' ?
                                 _products[index].title :
                                   _products[index].titleAr
-                                  ,style: const TextStyle(fontWeight: FontWeight.w600),),
-                                subtitle: Text("E£ ${_products[index].price}",style: const TextStyle(fontWeight: FontWeight.w500),),
+                                  ,style: const TextStyle(
+                                        fontWeight: FontWeight.w500),   trimLines: 2,
+                                  colorClickableText: Colors.blueAccent,
+                                  trimMode: TrimMode.Line,
+                                  trimCollapsedText: context.locale.languageCode == 'en'?'Show more':'المزيد',
+                                  trimExpandedText: context.locale.languageCode == 'en'?'Show less':'اقل'),
+                                subtitle: Text("E£ ${_products[index].price}",style: const TextStyle(fontWeight: FontWeight.w700),),
                                 trailing: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
                                         primary: Colors.black,
@@ -135,7 +145,7 @@ class _ServiceSelectorState extends State<ServiceSelector> {
                                       CherryToast.success(
                                           animationDuration:  const Duration(milliseconds:  500),
                                           toastDuration:  const Duration(milliseconds:  800),
-                                          toastPosition: Position.bottom,
+                                          toastPosition: Cherry.Position.top,
                                           title:  Text(LocaleKeys.addedToCart.tr(), style: const TextStyle(color: Colors.black))
                                       ).show(context);
                                         model.addProduct(_products[index]);}));

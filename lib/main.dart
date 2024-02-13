@@ -33,10 +33,14 @@ class MyApp extends StatelessWidget {
     return ScopedModel<CartModel>(
       model: model,
       child: GetMaterialApp(
-        theme: ThemeData(
-          useMaterial3: false
-        ),
+        builder: (context, child) {
+          return MediaQuery(
+            data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+            child: child!,
+          );
+        },
         debugShowCheckedModeBanner: false,
+        theme: ThemeData(useMaterial3: false),
         title: 'Shopping Cart',
         home: const SplashScreen(),
         localizationsDelegates:context.localizationDelegates ,

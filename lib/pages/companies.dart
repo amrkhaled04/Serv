@@ -209,7 +209,7 @@ class _SelectCompanyState extends State<SelectCompany> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Image.network(image, height: MediaQuery.of(context).size.width*0.22),
-              const SizedBox(height: 20,),
+              const SizedBox(height: 10,),
               Text(name, style: TextStyle(fontSize: MediaQuery.of(context).size.width*0.06),)
             ]
         ),

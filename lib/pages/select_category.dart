@@ -1,5 +1,6 @@
 
 import 'dart:async';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -104,7 +105,7 @@ class _SelectServiceState extends State<SelectService> {
                     Text(
                       LocaleKeys.categorySelectorTitle.tr(),
                       style: TextStyle(
-                        fontSize: MediaQuery.of(context).size.width*0.09,
+                        fontSize: Platform.isAndroid?MediaQuery.of(context).size.width*0.09:MediaQuery.of(context).size.width*0.08,
                         color: Colors.grey.shade900,
                         fontWeight: FontWeight.bold,
                       ),
