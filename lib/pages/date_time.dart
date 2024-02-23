@@ -504,7 +504,7 @@ class _DateAndTimeState extends State<DateAndTime> {
                           style: TextStyle(color: Colors.white,fontSize: MediaQuery.of(context).size.width *0.053),
                         ),
                       style: ElevatedButton.styleFrom(
-                          primary: FlutterFlowTheme.of(context).primary,
+                          backgroundColor: FlutterFlowTheme.of(context).primary,
                           fixedSize: Size(MediaQuery.of(context).size.width, MediaQuery.of(context).size.height*0.05),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10))),

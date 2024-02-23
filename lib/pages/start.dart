@@ -58,7 +58,7 @@ class _StartPageState extends State<StartPage> {
                         ElevatedButton(
                             style:ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                              primary: Colors.black,
+                              backgroundColor: Colors.black,
                               fixedSize: Size(MediaQuery.of(context).size.width*0.25, 50)
                             ),
                             onPressed: () async {
@@ -70,7 +70,7 @@ class _StartPageState extends State<StartPage> {
                         ElevatedButton(
                             style:ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                              primary: Colors.black,
+                              backgroundColor: Colors.black,
                               fixedSize: Size(MediaQuery.of(context).size.width*0.25, 50)
                             ),
                             onPressed: () async {

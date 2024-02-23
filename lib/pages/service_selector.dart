@@ -137,7 +137,7 @@ class _ServiceSelectorState extends State<ServiceSelector> {
                                 subtitle: Text("E£ ${_products[index].price}",style: const TextStyle(fontWeight: FontWeight.w700),),
                                 trailing: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
-                                        primary: Colors.black,
+                                        backgroundColor: Colors.black,
                                         shape:  RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
                                     child: const Icon(
                                         Icons.add_shopping_cart_rounded),
@@ -174,7 +174,7 @@ class _ServiceSelectorState extends State<ServiceSelector> {
                     style: TextStyle(color: Colors.white,fontSize: MediaQuery.of(context).size.width *0.053),
                   ),
                   style: ElevatedButton.styleFrom(
-                      primary: FlutterFlowTheme.of(context).primary,
+                      backgroundColor: FlutterFlowTheme.of(context).primary,
                       fixedSize: Size(MediaQuery.of(context).size.width*0.85, MediaQuery.of(context).size.height*0.065),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10))),
