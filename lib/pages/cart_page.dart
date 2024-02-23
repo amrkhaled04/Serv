@@ -152,7 +152,7 @@ class _CartPageState extends State<CartPage> {
                             style: TextStyle(color: Colors.white, fontSize: MediaQuery.of(context).size.width *0.053),
                           ),
                           style: ElevatedButton.styleFrom(
-                              primary: FlutterFlowTheme.of(context).primary,
+                              backgroundColor: FlutterFlowTheme.of(context).primary,
                               fixedSize: Size(
                                   MediaQuery.of(context).size.width * 0.85,
                                   MediaQuery.of(context).size.height * 0.065),
